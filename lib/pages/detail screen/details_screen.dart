@@ -47,7 +47,9 @@ class DetailsScreen extends StatelessWidget {
           height: 20,
         ),
         _cast(),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
         _overview()
       ],
     );
