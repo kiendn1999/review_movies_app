@@ -15,7 +15,7 @@ class _PopularViewState extends State<PopularView> {
         future: ApiServices().getPopularList(),
         builder: (context, snapshot) {
           if ((snapshot.hasError) || (!snapshot.hasData))
-            return Container(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           List<ItemPopular> popularList = snapshot.data;
           return GridView.builder(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),

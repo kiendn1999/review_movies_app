@@ -146,27 +146,27 @@ class DetailsScreen extends StatelessWidget {
             height: 20,
           ),
           Container(
-            height: 160,
-            child: FutureBuilder(
-              future: ApiServices().getCastList(id: itemPopular.id.toString()),
-              builder: (context, snapshot) {
-                if ((snapshot.hasError) || (!snapshot.hasData)) {
-                  return Container(
-                    child: Text("Loading..."),
-                  );
-                }
-                List<ItemCast> castItemList = snapshot.data;
-                return ListView.builder(
-                    shrinkWrap: true,
-                    physics: ClampingScrollPhysics(),
-                    itemCount: castItemList.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return _itemCast(castItemList[index]);
-                    });
-              },
-            ),
-          ),
+              height: 200,
+              child: FutureBuilder(
+                future:
+                    ApiServices().getCastList(id: itemPopular.id.toString()),
+                builder: (context, snapshot) {
+                  if ((snapshot.hasError) || (!snapshot.hasData)) {
+                    return Container(
+                      child: Text("Loading..."),
+                    );
+                  }
+                  List<ItemCast> castItemList = snapshot.data;
+                  return ListView.builder(
+                      shrinkWrap: true,
+                      physics: ClampingScrollPhysics(),
+                      itemCount: castItemList.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        return _itemCast(castItemList[index]);
+                      });
+                },
+              )),
         ],
       ),
     );
@@ -175,20 +175,20 @@ class DetailsScreen extends StatelessWidget {
   _itemCast(ItemCast itemCast) {
     return Container(
       margin: EdgeInsets.only(right: 12),
+      width: 120,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Expanded(
-              flex: 3,
-              child: Container(
-                height: 160,
-                width: 100,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                            "https://image.tmdb.org/t/p/w500${itemCast.profile_path}"))),
-              )),
+          Container(
+            height: 130,
+            width: 100,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: NetworkImage(
+                        "https://image.tmdb.org/t/p/w500${itemCast.profile_path}"))),
+          ),
           SizedBox(
             height: 5,
           ),
@@ -201,13 +201,10 @@ class DetailsScreen extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          Container(
-            width: 100,
-            child: Text(
-              itemCast.character,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 11),
-            ),
+          Text(
+            itemCast.character,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 11),
           )
         ],
       ),
