@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:review_movies_app/data_resources/api_services.dart';
 import 'package:review_movies_app/pages/detail%20screen/item_cast_model.dart';
+import 'package:review_movies_app/pages/popular%20screen/popular_view_model.dart';
 
 class DetailsScreen extends StatelessWidget {
+  final ItemPopular itemPopular;
+
+  const DetailsScreen({Key key, @required this.itemPopular}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +26,8 @@ class DetailsScreen extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          Image.asset("assets/images/itachi_shinden.jpg",
+          Image.network(
+              "https://image.tmdb.org/t/p/original${itemPopular.backdrop_path}",
               fit: BoxFit.cover,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width),
@@ -64,7 +71,8 @@ class DetailsScreen extends StatelessWidget {
           Expanded(
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: Image.asset("assets/images/itachi_shinden.jpg")),
+                child: Image.network(
+                    "https://image.tmdb.org/t/p/w500${itemPopular.poster_path}")),
             flex: 1,
           ),
           Expanded(
@@ -73,7 +81,7 @@ class DetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Itachi Shinden",
+                  Text(itemPopular.original_title,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                   SizedBox(
@@ -88,7 +96,7 @@ class DetailsScreen extends StatelessWidget {
                         flex: 2,
                       ),
                       Expanded(
-                        child: Text("05-T3-2021",
+                        child: Text(itemPopular.release_date,
                             style: TextStyle(fontSize: 14, fontFamily: 'd')),
                         flex: 4,
                       )
@@ -101,13 +109,13 @@ class DetailsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Text("Thể loại:",
+                        child: Text("Rating:",
                             style: TextStyle(fontSize: 14, fontFamily: 'd')),
                         flex: 2,
                       ),
                       Expanded(
                         child: Text(
-                          "Anime, hành động, tâm lý, tình cảm, drama, ngôn tình, viễn tưởng",
+                          itemPopular.vote_average.toString(),
                           style: TextStyle(fontSize: 14, fontFamily: 'd'),
                         ),
                         flex: 4,
@@ -139,14 +147,25 @@ class DetailsScreen extends StatelessWidget {
           ),
           Container(
             height: 160,
-            child: ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemCount: listItemCast.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) {
-                  return _itemCast(listItemCast[index]);
-                }),
+            child: FutureBuilder(
+              future: ApiServices().getCastList(id: itemPopular.id.toString()),
+              builder: (context, snapshot) {
+                if ((snapshot.hasError) || (!snapshot.hasData)) {
+                  return Container(
+                    child: Text("Loading..."),
+                  );
+                }
+                List<ItemCast> castItemList = snapshot.data;
+                return ListView.builder(
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    itemCount: castItemList.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return _itemCast(castItemList[index]);
+                    });
+              },
+            ),
           ),
         ],
       ),
@@ -167,7 +186,8 @@ class DetailsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18),
                     image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: AssetImage(itemCast.urlPhoto))),
+                        image: NetworkImage(
+                            "https://image.tmdb.org/t/p/w500${itemCast.profile_path}"))),
               )),
           SizedBox(
             height: 5,
@@ -181,9 +201,13 @@ class DetailsScreen extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          Text(
-            itemCast.character,
-            style: TextStyle(fontSize: 11),
+          Container(
+            width: 100,
+            child: Text(
+              itemCast.character,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 11),
+            ),
           )
         ],
       ),
@@ -204,7 +228,7 @@ class DetailsScreen extends StatelessWidget {
             height: 15,
           ),
           Text(
-            "Câu chuyện xoay quanh cuộc đời bi kịch của người anh hùng Itachi Uchiha khi phát hiện ra những bí mật kinh hoàng của ngôi làng lẫn xung đột của các bộ tộc. Vì chán ghét chiến tranh, muốn bảo vệ cho hòa bình thế giới Itachi đã có những lựa chọn khó khăn nhất, thậm chí từ bỏ ước mơ trở thành Hokage. \n\nKể từ khi gia nhập vào Anbu, đôi tay anh cũng nhuốm đầy máu và phản bội lại cả gia tộc Uchiha. Tuy nhiên không ai biết được sự hi sinh cao cả của anh, kể cả người em trai Sasuke.Trước đó nguyên tác của phim được viết bởi tác giả Takashi Yano, chia thành 2 tập và phát hành lần lượt trong quý 3 năm 2015.\n\nCả hai tập truyện của light novel đều lọt vào top light novel bán chạy nhất trong tháng, thậm chí còn được công ty Viz Media lên kế hoạch mua bản quyền. Các phần light novel ăn theo như Kakashi Hiden, Shikamaru Hiden và Sakura Hiden đã được mua bản quyền, dự định phát hành ở Thị trường Bắc Mỹ vào năm 2016.",
+            itemPopular.overview,
             textAlign: TextAlign.justify,
             style: TextStyle(fontSize: 16),
           )
