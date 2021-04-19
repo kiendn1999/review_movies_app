@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:review_movies_app/data_resources/api_services.dart';
 
 import 'pages/popular screen/popular_view_screen.dart';
 
@@ -9,13 +11,16 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          fontFamily: 'Comfortaa',
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity),
-      home: HomeScreen(),
+    return FutureProvider(
+      create: (context) => ApiServices().getPopularList(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            fontFamily: 'Comfortaa',
+            primarySwatch: Colors.blue,
+            visualDensity: VisualDensity.adaptivePlatformDensity),
+        home: HomeScreen(),
+      ),
     );
   }
 }

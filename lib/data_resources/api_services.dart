@@ -8,7 +8,7 @@ import 'dart:convert';
 import 'package:review_movies_app/resources/strings.dart';
 
 class ApiServices {
-  getPopularList() async {
+  Future<List<ItemPopular>> getPopularList() async {
     List<ItemPopular> popularList = [];
     var response = await http.get(ApiUrls().popularListApiUrl);
     if (response.statusCode == 200) {

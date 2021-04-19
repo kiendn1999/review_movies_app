@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:review_movies_app/data_resources/api_services.dart';
 import 'package:review_movies_app/pages/detail%20screen/details_screen.dart';
 import 'package:review_movies_app/pages/popular%20screen/popular_view_model.dart';
@@ -11,24 +12,23 @@ class PopularView extends StatefulWidget {
 class _PopularViewState extends State<PopularView> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: ApiServices().getPopularList(),
-        builder: (context, snapshot) {
-          if ((snapshot.hasError) || (!snapshot.hasData))
-            return Center(child: CircularProgressIndicator());
-          List<ItemPopular> popularList = snapshot.data;
-          return GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.62,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 30),
-              itemCount: popularList.length,
-              itemBuilder: (context, index) {
-                return _itemPopular(popularList[index]);
-              });
-        });
+    var popularList = Provider.of<List<ItemPopular>>(context);
+    return Container(
+        child: popularList != null
+            ? GridView.builder(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 30),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    childAspectRatio: 0.62,
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 30),
+                itemCount: popularList.length,
+                itemBuilder: (context, index) {
+                  return _itemPopular(popularList[index]);
+                })
+            : Center(
+                child: CircularProgressIndicator(),
+              ));
   }
 
   _itemPopular(ItemPopular itemPopular) {

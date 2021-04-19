@@ -1,4 +1,6 @@
-class ItemPopular {
+import 'package:flutter/cupertino.dart';
+
+class ItemPopular extends ChangeNotifier{
   int id;
   String original_title;
   String overview;
@@ -40,25 +42,25 @@ class ItemPopular {
   }
 }
 
-final List<ItemPopular> listItemPopular = [
-  ItemPopular(
-      original_title: "RAYA và rồng thần cuối cùng",
-      poster_path: "assets/images/Raya.jpg",
-      release_date: "05-T3-2021"),
-  ItemPopular(
-      original_title: "Tom và Jerry: Quậy tung New York",
-      poster_path: "assets/images/tom-and-jerry.jpg",
-      release_date: "26-T2-2021"),
-  ItemPopular(
-      original_title: "Itachi Shinden",
-      poster_path: "assets/images/itachi_shinden.jpg",
-      release_date: "05-T3-2021"),
-  ItemPopular(
-      original_title: "Fear of Rain",
-      poster_path: "assets/images/fear_of_rain.jpg",
-      release_date: "12-T2-2021"),
-  ItemPopular(
-      original_title: "The Last",
-      poster_path: "assets/images/naruto_the_last.jpg",
-      release_date: "19-T8-2021"),
-];
+// final List<ItemPopular> listItemPopular = [
+//   ItemPopular(
+//       original_title: "RAYA và rồng thần cuối cùng",
+//       poster_path: "assets/images/Raya.jpg",
+//       release_date: "05-T3-2021"),
+//   ItemPopular(
+//       original_title: "Tom và Jerry: Quậy tung New York",
+//       poster_path: "assets/images/tom-and-jerry.jpg",
+//       release_date: "26-T2-2021"),
+//   ItemPopular(
+//       original_title: "Itachi Shinden",
+//       poster_path: "assets/images/itachi_shinden.jpg",
+//       release_date: "05-T3-2021"),
+//   ItemPopular(
+//       original_title: "Fear of Rain",
+//       poster_path: "assets/images/fear_of_rain.jpg",
+//       release_date: "12-T2-2021"),
+//   ItemPopular(
+//       original_title: "The Last",
+//       poster_path: "assets/images/naruto_the_last.jpg",
+//       release_date: "19-T8-2021"),
+// ];
